@@ -1,7 +1,6 @@
 pipeline {
 agent any
 
-```
 stages {
     stage('Test AWS Credentials') {
         steps {
@@ -14,6 +13,5 @@ stages {
         }
     }
 }
-```
 
 }
