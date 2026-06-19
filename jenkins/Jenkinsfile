@@ -1,17 +1,27 @@
 pipeline {
 agent any
 
+```
 stages {
-    stage('Test AWS Credentials') {
+    stage('Verify AWS') {
         steps {
             withCredentials([
                 [$class: 'AmazonWebServicesCredentialsBinding',
                  credentialsId: 'aws-creds']
             ]) {
-                sh 'aws sts get-caller-identity'
+                sh '''
+                aws sts get-caller-identity
+
+                aws eks update-kubeconfig \
+                  --region us-east-1 \
+                  --name order-tracking-eks
+
+                kubectl get nodes
+                '''
             }
         }
     }
 }
+```
 
 }
