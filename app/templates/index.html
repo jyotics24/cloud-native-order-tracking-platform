@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Tracking Platform</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h1>Cloud Native Order Tracking Platform</h1>
+
+<h2>Create Order</h2>
+
+<input type="text" id="customer" placeholder="Customer Name">
+<input type="text" id="product" placeholder="Product Name">
+
+<button onclick="createOrder()">Create Order</button>
+
+<h2>Orders</h2>
+
+<button onclick="loadOrders()">Refresh Orders</button>
+
+<div id="orders"></div>
+
+</div>
+
+<script src="/static/script.js"></script>
+
+</body>
+</html>
