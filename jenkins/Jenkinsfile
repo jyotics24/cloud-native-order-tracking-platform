@@ -51,12 +51,11 @@ stages {
                 sh """
                 aws eks update-kubeconfig --region ${AWS_REGION} --name order-tracking-eks
 
-                kubectl apply -f kubernetes/deployment.yaml
-                kubectl apply -f kubernetes/service.yaml
+                kubectl set image deployment/order-tracking-app order-tracking-app=${ECR_REPO}:${IMAGE_TAG}
 
                 kubectl rollout status deployment/order-tracking-app
 
-                kubectl get pods
+                kubectl get pods -o wide
                 kubectl get svc
                 """
             }

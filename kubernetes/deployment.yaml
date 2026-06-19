@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: order-tracking-app
-        image: 227655494308.dkr.ecr.us-east-1.amazonaws.com/order-tracking-app:v1
+        image: 227655494308.dkr.ecr.us-east-1.amazonaws.com/order-tracking-app:latest
         ports:
         - containerPort: 5000
