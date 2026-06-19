@@ -1,7 +1,6 @@
 pipeline {
 agent any
 
-```
 environment {
     AWS_REGION = 'us-east-1'
     ECR_REPO = '227655494308.dkr.ecr.us-east-1.amazonaws.com/order-tracking-app'
@@ -19,9 +18,9 @@ stages {
     stage('Build Docker Image') {
         steps {
             dir('app') {
-                sh '''
+                sh """
                 docker build -t order-tracking-app:${IMAGE_TAG} .
-                '''
+                """
             }
         }
     }
@@ -32,15 +31,13 @@ stages {
                 [$class: 'AmazonWebServicesCredentialsBinding',
                  credentialsId: 'aws-creds']
             ]) {
-                sh '''
-                aws ecr get-login-password --region ${AWS_REGION} | \
-                docker login --username AWS --password-stdin ${ECR_REPO}
+                sh """
+                aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
 
-                docker tag order-tracking-app:${IMAGE_TAG} \
-                ${ECR_REPO}:${IMAGE_TAG}
+                docker tag order-tracking-app:${IMAGE_TAG} ${ECR_REPO}:${IMAGE_TAG}
 
                 docker push ${ECR_REPO}:${IMAGE_TAG}
-                '''
+                """
             }
         }
     }
@@ -51,21 +48,17 @@ stages {
                 [$class: 'AmazonWebServicesCredentialsBinding',
                  credentialsId: 'aws-creds']
             ]) {
-                sh '''
-                aws eks update-kubeconfig \
-                --region ${AWS_REGION} \
-                --name order-tracking-eks
-
-                kubectl set image deployment/order-tracking-app \
-                order-tracking-app=${ECR_REPO}:${IMAGE_TAG} || true
+                sh """
+                aws eks update-kubeconfig --region ${AWS_REGION} --name order-tracking-eks
 
                 kubectl apply -f kubernetes/deployment.yaml
                 kubectl apply -f kubernetes/service.yaml
 
                 kubectl rollout status deployment/order-tracking-app
+
                 kubectl get pods
                 kubectl get svc
-                '''
+                """
             }
         }
     }
