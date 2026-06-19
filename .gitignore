@@ -1,12 +1,20 @@
 # Terraform
+
 .terraform/
 *.tfstate
 *.tfstate.*
 .terraform.lock.hcl
 
-# AWS
+# AWS Keys
+
 *.pem
 
-# OS
+# Downloads / Tools
+
+eksctl.exe
+*.zip
+
+# OS Files
+
 .DS_Store
 Thumbs.db
