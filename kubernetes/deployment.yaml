@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-tracking-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-tracking-app
+  template:
+    metadata:
+      labels:
+        app: order-tracking-app
+    spec:
+      containers:
+      - name: order-tracking-app
+        image: 227655494308.dkr.ecr.us-east-1.amazonaws.com/order-tracking-app:v1
+        ports:
+        - containerPort: 5000

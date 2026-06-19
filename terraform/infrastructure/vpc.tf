@@ -66,6 +66,31 @@ resource "aws_subnet" "private_b" {
   }
 }
 
+# Elastic IP for NAT Gateway
+
+resource "aws_eip" "nat" {
+  domain = "vpc"
+
+  tags = {
+    Name = "nat-eip"
+  }
+}
+
+# NAT Gateway
+
+resource "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.nat.id
+  subnet_id     = aws_subnet.public_a.id
+
+  depends_on = [
+    aws_internet_gateway.igw
+  ]
+
+  tags = {
+    Name = "order-tracking-nat"
+  }
+}
+
 # Public Route Table
 
 resource "aws_route_table" "public" {
@@ -88,7 +113,7 @@ resource "aws_route_table" "private" {
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = "nat-13960f6e6176ef663"
+    nat_gateway_id = aws_nat_gateway.nat.id
   }
 
   tags = {
