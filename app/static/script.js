@@ -1,95 +1,52 @@
-const STATUS_FLOW = [
-"Created",
-"Processing",
-"Shipped",
-"Delivered"
-];
-
+const STATUS_FLOW = ["Created", "Processing", "Shipped", "Delivered"];
 let allOrders = [];
+
+function updateClock() {
+  const now = new Date();
+  const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+  document.getElementById('time-display').textContent = time;
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(tab + '-view').classList.add('active');
+
+  document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+  event.target.closest('.menu-item').classList.add('active');
+
+  const titles = {
+    dashboard: { title: 'Dashboard', subtitle: 'Live order tracking' },
+    orders: { title: 'Orders', subtitle: 'Create and manage orders' },
+    analytics: { title: 'Analytics', subtitle: 'Performance metrics' }
+  };
+
+  document.getElementById('page-title').textContent = titles[tab].title;
+  document.getElementById('page-subtitle').textContent = titles[tab].subtitle;
+}
 
 function scrollTo(selector) {
   const el = document.querySelector(selector);
   if (el) el.scrollIntoView({ behavior: 'smooth' });
 }
 
-const observeElements = () => {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.feature-card, .stat-large-card, .benefit-item').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    observer.observe(el);
-  });
-};
-
-function statusClass(status) {
-  const key = (status || "Created").toLowerCase();
-  if (key === "processing") return "status-processing";
-  if (key === "shipped") return "status-shipped";
-  if (key === "delivered") return "status-delivered";
-  return "status-created";
-}
-
-function showMessage(text, type) {
-  const el = document.getElementById("form-msg");
-  el.textContent = text;
-  el.style.animation = 'none';
-
-  setTimeout(() => {
-    el.style.animation = 'fadeInUp 0.3s ease-out';
-  }, 10);
-
-  if (type === "error") {
-    el.style.color = "#EF4444";
-    el.style.background = "#FEE2E2";
-  } else if (type === "success") {
-    el.style.color = "#10B981";
-    el.style.background = "#ECFDF5";
-  } else {
-    el.style.color = "#64748B";
-    el.style.background = "#F1F5F9";
-  }
-}
-
-function renderTracker(status) {
-  const currentIndex = STATUS_FLOW.indexOf(status);
-  return `<div class="order-progress">
-    ${STATUS_FLOW.map((step, index) => `
-      <div class="progress-step">
-        <div class="progress-dot ${index <= currentIndex ? "active" : ""}"></div>
-        <span>${step}</span>
-      </div>
-    `).join("")}
-  </div>`;
-}
-
 async function createOrder() {
   const customerInput = document.getElementById("customer");
   const productInput = document.getElementById("product");
-  const btn = document.querySelector('.btn-create-large');
+  const btn = document.querySelector('.btn-submit');
   const btnText = document.querySelector('.btn-text');
-  const btnSpinner = document.querySelector('.btn-spinner');
+  const loader = document.querySelector('.btn-loader');
 
   const customer = customerInput.value.trim();
   const product = productInput.value.trim();
 
   if (!customer || !product) {
-    showMessage("❌ Please enter customer and product name.", "error");
+    showFormMessage("❌ Please fill in all fields", "error");
     return;
   }
 
   btn.disabled = true;
   btnText.style.display = 'none';
-  btnSpinner.style.display = 'inline';
-
-  showMessage("⏳ Creating order...", "");
+  loader.style.display = 'inline';
 
   try {
     const response = await fetch("/orders", {
@@ -102,18 +59,27 @@ async function createOrder() {
 
     customerInput.value = "";
     productInput.value = "";
-    showMessage("✅ Order created successfully!", "success");
+    showFormMessage("✅ Order created successfully!", "success");
 
-    await new Promise(resolve => setTimeout(resolve, 800));
+    await new Promise(r => setTimeout(r, 800));
     await loadOrders();
 
   } catch (e) {
-    showMessage("❌ Failed to create order. Try again.", "error");
+    showFormMessage("❌ Failed to create order", "error");
   } finally {
     btn.disabled = false;
     btnText.style.display = 'inline';
-    btnSpinner.style.display = 'none';
+    loader.style.display = 'none';
   }
+}
+
+function showFormMessage(text, type) {
+  const el = document.getElementById("form-msg");
+  el.textContent = text;
+  el.style.color = type === "error" ? "#EF4444" : "#10B981";
+  el.style.background = type === "error" ? "#FEE2E2" : "#ECFDF5";
+  el.style.padding = "12px";
+  el.style.borderRadius = "8px";
 }
 
 async function loadOrders() {
@@ -132,7 +98,7 @@ function renderOrders(orders) {
 
   if (!orders.length) {
     list.innerHTML = `
-      <div id="empty-state" class="empty-state">
+      <div class="empty-orders">
         <div class="empty-icon">📭</div>
         <p>No orders yet</p>
         <span>Create your first order to get started</span>
@@ -143,52 +109,79 @@ function renderOrders(orders) {
 
   const sorted = [...orders].reverse();
   list.innerHTML = sorted.map((order, idx) => `
-    <div class="order-card" style="animation-delay:${idx * 0.05}s">
-      <div class="order-main">
-        <span class="order-id">
-          ORDER #${(order.order_id || "").toString().slice(0, 8)}
-        </span>
-        <span class="order-title">
-          📦 ${escapeHtml(order.product)}
-        </span>
-        <span class="order-customer">
-          👤 ${escapeHtml(order.customer)}
+    <div style="animation-delay: ${idx * 0.05}s">
+      <div class="col-id">#${(order.order_id || "").toString().slice(0, 8)}</div>
+      <div class="col-customer">${escapeHtml(order.customer)}</div>
+      <div class="col-product">${escapeHtml(order.product)}</div>
+      <div class="col-status">
+        <span class="status-badge status-${order.status ? order.status.toLowerCase() : 'created'}">
+          ${escapeHtml(order.status || "Created")}
         </span>
       </div>
-      ${renderTracker(order.status || "Created")}
-      <div class="status-pill ${statusClass(order.status)}">
-        ${escapeHtml(order.status || "Created")}
-      </div>
+      <div class="col-time">Just now</div>
     </div>
   `).join("");
 }
 
 function updateStats(orders) {
-  const animateCount = (el, newValue) => {
-    const current = parseInt(el.textContent) || 0;
-    if (current === newValue) return;
-
+  const animate = (el, value) => {
     el.style.animation = 'none';
     setTimeout(() => {
       el.style.animation = 'pulse 0.6s ease-out';
-      el.textContent = newValue;
+      el.textContent = value;
     }, 10);
   };
 
-  animateCount(document.getElementById("stat-total"), orders.length);
-  animateCount(document.getElementById("stat-total-large"), orders.length);
+  animate(document.getElementById("stat-total"), orders.length);
+  animate(document.getElementById("ana-total"), orders.length);
 
   const created = orders.filter(o => (o.status || "Created") === "Created").length;
-  animateCount(document.getElementById("stat-created"), created);
-  animateCount(document.getElementById("stat-created-large"), created);
+  animate(document.getElementById("stat-created"), created);
 
   const shipped = orders.filter(o => o.status === "Shipped").length;
-  animateCount(document.getElementById("stat-shipped"), shipped);
-  animateCount(document.getElementById("stat-shipped-large"), shipped);
+  animate(document.getElementById("stat-shipped"), shipped);
 
   const delivered = orders.filter(o => o.status === "Delivered").length;
-  animateCount(document.getElementById("stat-delivered"), delivered);
-  animateCount(document.getElementById("stat-delivered-large"), delivered);
+  animate(document.getElementById("stat-delivered"), delivered);
+
+  const completion = orders.length > 0 ? Math.round((delivered / orders.length) * 100) : 0;
+  animate(document.getElementById("ana-completion"), completion + "%");
+
+  // Update chart bars
+  const total = orders.length || 1;
+  document.getElementById("bar-created").style.width = (created / total * 100) + "%";
+  document.getElementById("val-created").textContent = created;
+
+  const processing = orders.filter(o => o.status === "Processing").length;
+  document.getElementById("bar-processing").style.width = (processing / total * 100) + "%";
+  document.getElementById("val-processing").textContent = processing;
+
+  document.getElementById("bar-shipped").style.width = (shipped / total * 100) + "%";
+  document.getElementById("val-shipped").textContent = shipped;
+
+  document.getElementById("bar-delivered").style.width = (delivered / total * 100) + "%";
+  document.getElementById("val-delivered").textContent = delivered;
+}
+
+function filterByStatus(status) {
+  const filtered = allOrders.filter(o => o.status === status);
+  renderOrders(filtered);
+}
+
+function exportOrders() {
+  if (allOrders.length === 0) {
+    alert("No orders to export");
+    return;
+  }
+  const csv = "ID,Customer,Product,Status\n" + allOrders.map(o =>
+    `${o.order_id},${o.customer},${o.product},${o.status}`
+  ).join("\n");
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'orders.csv';
+  a.click();
 }
 
 function escapeHtml(str) {
@@ -202,30 +195,28 @@ function escapeHtml(str) {
 
 document.addEventListener("DOMContentLoaded", () => {
   loadOrders();
-  observeElements();
+  updateClock();
+  setInterval(updateClock, 1000);
 
   const searchBox = document.getElementById("search-order");
   if (searchBox) {
     let searchTimeout;
-
     searchBox.addEventListener("input", e => {
       clearTimeout(searchTimeout);
       const search = e.target.value.toLowerCase().trim();
-
       searchTimeout = setTimeout(() => {
-        const filtered = allOrders.filter(order => {
-          return (
-            (order.customer || "").toLowerCase().includes(search) ||
-            (order.product || "").toLowerCase().includes(search)
-          );
-        });
+        const filtered = allOrders.filter(order =>
+          (order.customer || "").toLowerCase().includes(search) ||
+          (order.product || "").toLowerCase().includes(search)
+        );
         renderOrders(filtered);
       }, 200);
     });
   }
 
-  // Auto-refresh every 10 seconds
-  setInterval(() => {
-    loadOrders();
-  }, 10000);
+  // Auto-refresh every 5 seconds
+  setInterval(() => { loadOrders(); }, 5000);
+
+  // Set first menu item active
+  document.querySelector('.menu-item').classList.add('active');
 });
