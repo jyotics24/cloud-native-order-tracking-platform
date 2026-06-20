@@ -1,113 +1,161 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Order Tracking Platform</title>
+
+<title>Cloud Native Order Tracking Platform</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
 
-<div class="shell">
+<div class="page">
 
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-mark">OT</div>
-      <div class="brand-text">
-        <span class="brand-name">Order Tracker</span>
-        <span class="brand-sub">Fulfillment Console</span>
-      </div>
-    </div>
+  <header class="topbar">
 
-    <nav class="nav">
-      <a class="nav-item is-active" href="#">
-        <span class="nav-dot"></span> Orders
-      </a>
-      <a class="nav-item" href="/health" target="_blank">
-        <span class="nav-dot"></span> System Health
-      </a>
-    </nav>
+```
+<div class="logo">
+  <div class="logo-box">OT</div>
 
-    <div class="sidebar-foot">
-      <div class="env-pill">
-        <span class="env-dot"></span> EKS &middot; us-east-1
-      </div>
-    </div>
-  </aside>
+  <div>
+    <h3>Order Tracker</h3>
+    <span>Cloud Native Platform</span>
+  </div>
+</div>
 
-  <main class="main">
+<div class="topbar-right">
+  <a href="/health" target="_blank">
+    System Health
+  </a>
+</div>
+```
 
-    <header class="topbar">
-      <div>
-        <h1>Orders</h1>
-        <p class="topbar-sub">Create, track, and manage customer orders in real time.</p>
-      </div>
-    </header>
+  </header>
 
-    <section class="stats">
-      <div class="stat-card">
-        <span class="stat-label">Total orders</span>
-        <span class="stat-value" id="stat-total">0</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-label">Created</span>
-        <span class="stat-value" id="stat-created">0</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-label">Shipped</span>
-        <span class="stat-value" id="stat-shipped">0</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-label">Delivered</span>
-        <span class="stat-value" id="stat-delivered">0</span>
-      </div>
-    </section>
+  <section class="hero">
 
-    <section class="panel">
-      <div class="panel-head">
-        <h2>New order</h2>
-        <p>Add an order to the tracking system.</p>
-      </div>
-      <form class="order-form" id="order-form" onsubmit="return false;">
-        <div class="field">
-          <label for="customer">Customer name</label>
-          <input type="text" id="customer" placeholder="e.g. Asha Verma" autocomplete="off">
-        </div>
-        <div class="field">
-          <label for="product">Product</label>
-          <input type="text" id="product" placeholder="e.g. Wireless Headphones" autocomplete="off">
-        </div>
-        <button type="button" class="btn-primary" onclick="createOrder()">
-          Create order
-        </button>
-      </form>
-      <p class="form-msg" id="form-msg"></p>
-    </section>
+```
+<div class="hero-content">
 
-    <section class="panel">
-      <div class="panel-head panel-head-row">
-        <div>
-          <h2>All orders</h2>
-          <p>Latest orders appear first.</p>
-        </div>
-        <button class="btn-secondary" onclick="loadOrders()">Refresh</button>
-      </div>
+  <span class="hero-badge">
+    Production Environment
+  </span>
 
-      <div id="orders-list" class="orders-list">
-        <div class="empty-state" id="empty-state">
-          <div class="empty-glyph">&#9678;</div>
-          <p>No orders yet</p>
-          <span>Create your first order above to see it tracked here.</span>
-        </div>
-      </div>
-    </section>
+  <h1>
+    Track Orders Faster
+  </h1>
 
-  </main>
+  <p>
+    Enterprise-grade order tracking platform built with
+    Terraform, Jenkins, Docker, Amazon EKS,
+    ALB, Route53 and CloudWatch.
+  </p>
+
+</div>
+
+<div class="hero-graphic">
+  📦 🚚
+</div>
+```
+
+  </section>
+
+  <section class="stats">
+
+```
+<div class="stat-card">
+  <span>Total Orders</span>
+  <strong id="stat-total">0</strong>
+</div>
+
+<div class="stat-card">
+  <span>Created</span>
+  <strong id="stat-created">0</strong>
+</div>
+
+<div class="stat-card">
+  <span>Shipped</span>
+  <strong id="stat-shipped">0</strong>
+</div>
+
+<div class="stat-card">
+  <span>Delivered</span>
+  <strong id="stat-delivered">0</strong>
+</div>
+```
+
+  </section>
+
+  <section class="panel">
+
+```
+<h2>Create New Order</h2>
+
+<form id="order-form" onsubmit="return false;">
+
+  <input
+    type="text"
+    id="customer"
+    placeholder="Customer Name">
+
+  <input
+    type="text"
+    id="product"
+    placeholder="Product Name">
+
+  <button
+    type="button"
+    onclick="createOrder()">
+    Create Order
+  </button>
+
+</form>
+
+<p id="form-msg"></p>
+```
+
+  </section>
+
+  <section class="panel">
+
+```
+<div class="panel-header">
+
+  <h2>Recent Orders</h2>
+
+  <button onclick="loadOrders()">
+    Refresh
+  </button>
+
+</div>
+
+<input
+  type="text"
+  id="search-order"
+  placeholder="Search customer or product">
+
+<div id="orders-list">
+
+  <div id="empty-state">
+    No Orders Yet
+  </div>
+
+</div>
+```
+
+  </section>
+
 </div>
 
 <script src="/static/script.js"></script>
+
 </body>
 </html>
