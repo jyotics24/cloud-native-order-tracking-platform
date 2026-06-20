@@ -1,144 +1,345 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Cloud Native Order Tracking Platform</title>
-
+<title>Order Tracking Platform - Enterprise Solutions</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
 
-<div class="page">
-
-  <header class="topbar">
-<div class="logo">
-  <div class="logo-box">OT</div>
-  <div>
-    <h3>Order Tracker</h3>
-    <span>Cloud Native Platform</span>
+<!-- NAVIGATION -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-logo">
+      <div class="logo-icon">OT</div>
+      <div>
+        <h3>OrderTracker</h3>
+        <span>Enterprise Platform</span>
+      </div>
+    </div>
+    <div class="navbar-links">
+      <a href="#features">Features</a>
+      <a href="#stats">Statistics</a>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#dashboard" class="navbar-cta">Launch App</a>
   </div>
-</div>
+</nav>
 
-<div class="topbar-right">
-  <a href="/health" target="_blank" title="View system health status">
-    System Health
-  </a>
-</div>
-  </header>
-
-  <section class="hero" aria-label="Welcome banner">
-<div class="hero-content">
-  <span class="hero-badge">
-    Production Environment
-  </span>
-
-  <h1>
-    Track Orders Faster
-  </h1>
-
-  <p>
-    Enterprise-grade order tracking platform built with
-    Terraform, Jenkins, Docker, Amazon EKS,
-    ALB, Route53 and CloudWatch.
-  </p>
-</div>
-
-<div class="hero-graphic" role="img" aria-label="Package and delivery truck emoji">
-  📦 🚚
-</div>
-  </section>
-
-  <section class="stats" aria-label="Order statistics">
-<div class="stat-card" role="region" aria-label="Total orders count">
-  <span>Total Orders</span>
-  <strong id="stat-total" aria-live="polite">0</strong>
-</div>
-
-<div class="stat-card" role="region" aria-label="Created orders count">
-  <span>Created</span>
-  <strong id="stat-created" aria-live="polite">0</strong>
-</div>
-
-<div class="stat-card" role="region" aria-label="Shipped orders count">
-  <span>Shipped</span>
-  <strong id="stat-shipped" aria-live="polite">0</strong>
-</div>
-
-<div class="stat-card" role="region" aria-label="Delivered orders count">
-  <span>Delivered</span>
-  <strong id="stat-delivered" aria-live="polite">0</strong>
-</div>
-  </section>
-
-  <section class="panel" aria-label="Create new order form">
-<h2>Create New Order</h2>
-
-<form id="order-form" onsubmit="return false;" novalidate>
-  <input
-    type="text"
-    id="customer"
-    placeholder="Customer Name"
-    aria-label="Customer name"
-    required>
-
-  <input
-    type="text"
-    id="product"
-    placeholder="Product Name"
-    aria-label="Product name"
-    required>
-
-  <button
-    type="button"
-    onclick="createOrder()"
-    aria-label="Create new order"
-    class="btn-create">
-    <span class="btn-text">Create Order</span>
-    <span class="btn-spinner" style="display:none;">⏳</span>
-  </button>
-</form>
-
-<p id="form-msg" role="status" aria-live="polite" aria-atomic="true"></p>
-  </section>
-
-  <section class="panel" aria-label="Recent orders section">
-<div class="panel-header">
-  <h2>Recent Orders</h2>
-
-  <button
-    onclick="loadOrders()"
-    aria-label="Refresh orders list"
-    class="btn-refresh"
-    title="Reload orders from server">
-    ↻ Refresh
-  </button>
-</div>
-
-<input
-  type="text"
-  id="search-order"
-  placeholder="Search customer or product"
-  aria-label="Search orders by customer or product name"
-  role="searchbox">
-
-<div id="orders-list" role="region" aria-label="Orders list">
-  <div id="empty-state">
-    <div style="font-size:40px;margin-bottom:12px;">📭</div>
-    No Orders Yet
+<!-- HERO SECTION -->
+<section class="hero-large">
+  <div class="hero-content-large">
+    <div class="hero-text-side">
+      <span class="hero-badge-large">🚀 Cloud Native Solution</span>
+      <h1 class="hero-title">Track Orders in Real-Time</h1>
+      <p class="hero-subtitle">Enterprise-grade order tracking platform built on AWS EKS with Terraform, Jenkins, Docker, ALB, Route53, and CloudWatch for maximum reliability and scalability.</p>
+      <div class="hero-buttons">
+        <button class="btn-primary-large" onclick="scrollTo('#dashboard')">Get Started</button>
+        <button class="btn-secondary-large" onclick="window.open('/health', '_blank')">Check Health</button>
+      </div>
+    </div>
+    <div class="hero-visual-side">
+      <div class="animated-box">
+        <div class="box-item">📦</div>
+        <div class="box-item">🚚</div>
+        <div class="box-item">✅</div>
+      </div>
+    </div>
   </div>
-</div>
-  </section>
+</section>
 
-</div>
+<!-- FEATURES SECTION -->
+<section class="features-section" id="features">
+  <div class="section-header">
+    <h2>Powerful Features</h2>
+    <p>Everything you need for enterprise order management</p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Real-Time Tracking</h3>
+      <p>Monitor order status instantly with live updates across your entire operation.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🔐</div>
+      <h3>Enterprise Security</h3>
+      <p>Built on AWS infrastructure with encryption, IAM roles, and security best practices.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>Advanced Analytics</h3>
+      <p>CloudWatch integration provides detailed metrics and insights on order processing.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🔄</div>
+      <h3>Auto-Scaling</h3>
+      <p>Kubernetes-based infrastructure automatically scales to handle peak loads.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🌐</div>
+      <h3>Global Availability</h3>
+      <p>Distributed across regions with Route53 for high availability and low latency.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🛠️</div>
+      <h3>Infrastructure as Code</h3>
+      <p>Terraform-based infrastructure for reproducible, version-controlled deployments.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STATS SECTION -->
+<section class="stats-large-section" id="stats">
+  <div class="section-header light">
+    <h2>Platform Statistics</h2>
+    <p>Real-time metrics from your order tracking system</p>
+  </div>
+
+  <div class="stats-grid-large">
+    <div class="stat-large-card">
+      <div class="stat-icon">📦</div>
+      <strong id="stat-total-large">0</strong>
+      <span>Total Orders</span>
+      <div class="stat-bar" style="width: 85%;"></div>
+    </div>
+
+    <div class="stat-large-card">
+      <div class="stat-icon">🆕</div>
+      <strong id="stat-created-large">0</strong>
+      <span>Created</span>
+      <div class="stat-bar" style="width: 45%;"></div>
+    </div>
+
+    <div class="stat-large-card">
+      <div class="stat-icon">🚀</div>
+      <strong id="stat-shipped-large">0</strong>
+      <span>Shipped</span>
+      <div class="stat-bar" style="width: 65%;"></div>
+    </div>
+
+    <div class="stat-large-card">
+      <div class="stat-icon">✅</div>
+      <strong id="stat-delivered-large">0</strong>
+      <span>Delivered</span>
+      <div class="stat-bar" style="width: 75%;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNOLOGY STACK -->
+<section class="tech-section">
+  <div class="section-header">
+    <h2>Built With Modern Technology</h2>
+    <p>Enterprise-grade tools and platforms</p>
+  </div>
+
+  <div class="tech-grid">
+    <div class="tech-card">
+      <h4>Infrastructure</h4>
+      <ul>
+        <li>Amazon EKS</li>
+        <li>AWS ALB</li>
+        <li>Route53</li>
+      </ul>
+    </div>
+
+    <div class="tech-card">
+      <h4>Deployment</h4>
+      <ul>
+        <li>Terraform</li>
+        <li>Jenkins</li>
+        <li>Docker</li>
+      </ul>
+    </div>
+
+    <div class="tech-card">
+      <h4>Monitoring</h4>
+      <ul>
+        <li>CloudWatch</li>
+        <li>Prometheus</li>
+        <li>Grafana</li>
+      </ul>
+    </div>
+
+    <div class="tech-card">
+      <h4>Frontend</h4>
+      <ul>
+        <li>HTML5</li>
+        <li>CSS3</li>
+        <li>JavaScript</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD SECTION -->
+<section class="dashboard-section" id="dashboard">
+  <div class="section-header">
+    <h2>Order Management Dashboard</h2>
+    <p>Create and manage orders in real-time</p>
+  </div>
+
+  <div class="dashboard-grid">
+    <!-- CREATE ORDER PANEL -->
+    <div class="dashboard-panel">
+      <h3>📝 Create New Order</h3>
+      <form id="order-form" onsubmit="return false;" novalidate>
+        <div class="form-group">
+          <label for="customer">Customer Name</label>
+          <input
+            type="text"
+            id="customer"
+            placeholder="Enter customer name"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="product">Product Name</label>
+          <input
+            type="text"
+            id="product"
+            placeholder="Enter product name"
+            required>
+        </div>
+
+        <button type="button" onclick="createOrder()" class="btn-create-large">
+          <span class="btn-text">Create Order</span>
+          <span class="btn-spinner" style="display:none;">⏳</span>
+        </button>
+      </form>
+      <p id="form-msg" class="form-message"></p>
+    </div>
+
+    <!-- SEARCH & FILTER PANEL -->
+    <div class="dashboard-panel">
+      <h3>🔍 Search Orders</h3>
+      <div class="search-container">
+        <input
+          type="text"
+          id="search-order"
+          placeholder="Search by customer or product..."
+          role="searchbox">
+        <button onclick="loadOrders()" class="btn-refresh-large" title="Refresh orders">
+          ↻ Refresh
+        </button>
+      </div>
+      <div class="search-hints">
+        <p>💡 Tip: Start typing to filter orders in real-time</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDERS LIST -->
+  <div class="orders-section">
+    <h3>📋 Recent Orders</h3>
+    <div id="orders-list" class="orders-container">
+      <div id="empty-state" class="empty-state">
+        <div class="empty-icon">📭</div>
+        <p>No orders yet</p>
+        <span>Create your first order to get started</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS SECTION -->
+<section class="benefits-section" id="contact">
+  <div class="section-header light">
+    <h2>Why Choose OrderTracker?</h2>
+    <p>Industry-leading order management solution</p>
+  </div>
+
+  <div class="benefits-grid">
+    <div class="benefit-item">
+      <div class="benefit-number">01</div>
+      <h4>99.9% Uptime SLA</h4>
+      <p>Reliable infrastructure ensures your orders are always tracked.</p>
+    </div>
+
+    <div class="benefit-item">
+      <div class="benefit-number">02</div>
+      <h4>Sub-second Latency</h4>
+      <p>Global CDN and optimized backend for instant order updates.</p>
+    </div>
+
+    <div class="benefit-item">
+      <div class="benefit-number">03</div>
+      <h4>Zero-Downtime Deployments</h4>
+      <p>Kubernetes rolling updates ensure continuous service availability.</p>
+    </div>
+
+    <div class="benefit-item">
+      <div class="benefit-number">04</div>
+      <h4>Full Audit Trail</h4>
+      <p>Complete history of all order changes and user actions.</p>
+    </div>
+
+    <div class="benefit-item">
+      <div class="benefit-number">05</div>
+      <h4>Scalable Architecture</h4>
+      <p>Handle millions of orders with horizontal auto-scaling.</p>
+    </div>
+
+    <div class="benefit-item">
+      <div class="benefit-number">06</div>
+      <h4>24/7 Support</h4>
+      <p>Dedicated support team for enterprise customers.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-column">
+      <h4>OrderTracker</h4>
+      <p>Enterprise order tracking platform for modern businesses.</p>
+    </div>
+
+    <div class="footer-column">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#stats">Statistics</a></li>
+        <li><a href="#dashboard">Dashboard</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="/health" target="_blank">System Health</a></li>
+        <li><a href="#">Documentation</a></li>
+        <li><a href="#">Support</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2024 OrderTracker. All rights reserved.</p>
+  </div>
+</footer>
 
 <script src="/static/script.js"></script>
 
