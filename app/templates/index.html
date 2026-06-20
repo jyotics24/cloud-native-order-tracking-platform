@@ -1,31 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Order Tracking Platform</title>
-    <link rel="stylesheet" href="/static/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Tracking Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
-<div class="container">
+<div class="shell">
 
-<h1>Cloud Native Order Tracking Platform</h1>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">OT</div>
+      <div class="brand-text">
+        <span class="brand-name">Order Tracker</span>
+        <span class="brand-sub">Fulfillment Console</span>
+      </div>
+    </div>
 
-<h2>Create Order</h2>
+    <nav class="nav">
+      <a class="nav-item is-active" href="#">
+        <span class="nav-dot"></span> Orders
+      </a>
+      <a class="nav-item" href="/health" target="_blank">
+        <span class="nav-dot"></span> System Health
+      </a>
+    </nav>
 
-<input type="text" id="customer" placeholder="Customer Name">
-<input type="text" id="product" placeholder="Product Name">
+    <div class="sidebar-foot">
+      <div class="env-pill">
+        <span class="env-dot"></span> EKS &middot; us-east-1
+      </div>
+    </div>
+  </aside>
 
-<button onclick="createOrder()">Create Order</button>
+  <main class="main">
 
-<h2>Orders</h2>
+    <header class="topbar">
+      <div>
+        <h1>Orders</h1>
+        <p class="topbar-sub">Create, track, and manage customer orders in real time.</p>
+      </div>
+    </header>
 
-<button onclick="loadOrders()">Refresh Orders</button>
+    <section class="stats">
+      <div class="stat-card">
+        <span class="stat-label">Total orders</span>
+        <span class="stat-value" id="stat-total">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Created</span>
+        <span class="stat-value" id="stat-created">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Shipped</span>
+        <span class="stat-value" id="stat-shipped">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Delivered</span>
+        <span class="stat-value" id="stat-delivered">0</span>
+      </div>
+    </section>
 
-<div id="orders"></div>
+    <section class="panel">
+      <div class="panel-head">
+        <h2>New order</h2>
+        <p>Add an order to the tracking system.</p>
+      </div>
+      <form class="order-form" id="order-form" onsubmit="return false;">
+        <div class="field">
+          <label for="customer">Customer name</label>
+          <input type="text" id="customer" placeholder="e.g. Asha Verma" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="product">Product</label>
+          <input type="text" id="product" placeholder="e.g. Wireless Headphones" autocomplete="off">
+        </div>
+        <button type="button" class="btn-primary" onclick="createOrder()">
+          Create order
+        </button>
+      </form>
+      <p class="form-msg" id="form-msg"></p>
+    </section>
 
+    <section class="panel">
+      <div class="panel-head panel-head-row">
+        <div>
+          <h2>All orders</h2>
+          <p>Latest orders appear first.</p>
+        </div>
+        <button class="btn-secondary" onclick="loadOrders()">Refresh</button>
+      </div>
+
+      <div id="orders-list" class="orders-list">
+        <div class="empty-state" id="empty-state">
+          <div class="empty-glyph">&#9678;</div>
+          <p>No orders yet</p>
+          <span>Create your first order above to see it tracked here.</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
 </div>
 
 <script src="/static/script.js"></script>
-
 </body>
 </html>
