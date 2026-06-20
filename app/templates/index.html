@@ -20,11 +20,8 @@
 <div class="page">
 
   <header class="topbar">
-
-```
 <div class="logo">
   <div class="logo-box">OT</div>
-
   <div>
     <h3>Order Tracker</h3>
     <span>Cloud Native Platform</span>
@@ -32,19 +29,14 @@
 </div>
 
 <div class="topbar-right">
-  <a href="/health" target="_blank">
+  <a href="/health" target="_blank" title="View system health status">
     System Health
   </a>
 </div>
-```
-
   </header>
 
-  <section class="hero">
-
-```
+  <section class="hero" aria-label="Welcome banner">
 <div class="hero-content">
-
   <span class="hero-badge">
     Production Environment
   </span>
@@ -58,99 +50,92 @@
     Terraform, Jenkins, Docker, Amazon EKS,
     ALB, Route53 and CloudWatch.
   </p>
-
 </div>
 
-<div class="hero-graphic">
+<div class="hero-graphic" role="img" aria-label="Package and delivery truck emoji">
   📦 🚚
 </div>
-```
-
   </section>
 
-  <section class="stats">
-
-```
-<div class="stat-card">
+  <section class="stats" aria-label="Order statistics">
+<div class="stat-card" role="region" aria-label="Total orders count">
   <span>Total Orders</span>
-  <strong id="stat-total">0</strong>
+  <strong id="stat-total" aria-live="polite">0</strong>
 </div>
 
-<div class="stat-card">
+<div class="stat-card" role="region" aria-label="Created orders count">
   <span>Created</span>
-  <strong id="stat-created">0</strong>
+  <strong id="stat-created" aria-live="polite">0</strong>
 </div>
 
-<div class="stat-card">
+<div class="stat-card" role="region" aria-label="Shipped orders count">
   <span>Shipped</span>
-  <strong id="stat-shipped">0</strong>
+  <strong id="stat-shipped" aria-live="polite">0</strong>
 </div>
 
-<div class="stat-card">
+<div class="stat-card" role="region" aria-label="Delivered orders count">
   <span>Delivered</span>
-  <strong id="stat-delivered">0</strong>
+  <strong id="stat-delivered" aria-live="polite">0</strong>
 </div>
-```
-
   </section>
 
-  <section class="panel">
-
-```
+  <section class="panel" aria-label="Create new order form">
 <h2>Create New Order</h2>
 
-<form id="order-form" onsubmit="return false;">
-
+<form id="order-form" onsubmit="return false;" novalidate>
   <input
     type="text"
     id="customer"
-    placeholder="Customer Name">
+    placeholder="Customer Name"
+    aria-label="Customer name"
+    required>
 
   <input
     type="text"
     id="product"
-    placeholder="Product Name">
+    placeholder="Product Name"
+    aria-label="Product name"
+    required>
 
   <button
     type="button"
-    onclick="createOrder()">
-    Create Order
+    onclick="createOrder()"
+    aria-label="Create new order"
+    class="btn-create">
+    <span class="btn-text">Create Order</span>
+    <span class="btn-spinner" style="display:none;">⏳</span>
   </button>
-
 </form>
 
-<p id="form-msg"></p>
-```
-
+<p id="form-msg" role="status" aria-live="polite" aria-atomic="true"></p>
   </section>
 
-  <section class="panel">
-
-```
+  <section class="panel" aria-label="Recent orders section">
 <div class="panel-header">
-
   <h2>Recent Orders</h2>
 
-  <button onclick="loadOrders()">
-    Refresh
+  <button
+    onclick="loadOrders()"
+    aria-label="Refresh orders list"
+    class="btn-refresh"
+    title="Reload orders from server">
+    ↻ Refresh
   </button>
-
 </div>
 
 <input
   type="text"
   id="search-order"
-  placeholder="Search customer or product">
+  placeholder="Search customer or product"
+  aria-label="Search orders by customer or product name"
+  role="searchbox">
 
-<div id="orders-list">
-
+<div id="orders-list" role="region" aria-label="Orders list">
   <div id="empty-state">
+    <div style="font-size:40px;margin-bottom:12px;">📭</div>
     No Orders Yet
   </div>
-
 </div>
-```
-
   </section>
 
 </div>
