@@ -25,7 +25,9 @@ resource "aws_subnet" "public_a" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "public-subnet-a"
+    Name                                       = "public-subnet-a"
+    "kubernetes.io/role/elb"                   = "1"
+    "kubernetes.io/cluster/order-tracking-eks" = "shared"
   }
 }
 
@@ -38,7 +40,9 @@ resource "aws_subnet" "public_b" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "public-subnet-b"
+    Name                                       = "public-subnet-b"
+    "kubernetes.io/role/elb"                   = "1"
+    "kubernetes.io/cluster/order-tracking-eks" = "shared"
   }
 }
 
@@ -50,7 +54,9 @@ resource "aws_subnet" "private_a" {
   availability_zone = "us-east-1a"
 
   tags = {
-    Name = "private-subnet-a"
+    Name                                       = "private-subnet-a"
+    "kubernetes.io/role/internal-elb"          = "1"
+    "kubernetes.io/cluster/order-tracking-eks" = "shared"
   }
 }
 
@@ -62,7 +68,9 @@ resource "aws_subnet" "private_b" {
   availability_zone = "us-east-1b"
 
   tags = {
-    Name = "private-subnet-b"
+    Name                                       = "private-subnet-b"
+    "kubernetes.io/role/internal-elb"          = "1"
+    "kubernetes.io/cluster/order-tracking-eks" = "shared"
   }
 }
 

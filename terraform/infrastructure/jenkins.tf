@@ -7,14 +7,14 @@ resource "aws_security_group" "jenkins_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.ssh_allowed_cidr]
   }
 
   ingress {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.ssh_allowed_cidr]
   }
 
   egress {
@@ -41,7 +41,7 @@ resource "aws_instance" "jenkins" {
     volume_type = "gp3"
   }
 
-  user_data = <<-EOF
+  user_data = <<-USERDATA
 #!/bin/bash
 set -e
 
@@ -79,6 +79,11 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o awscliv2.zip
 unzip awscliv2.zip
 ./aws/install
 
+# Terraform CLI
+dnf install -y dnf-plugins-core
+dnf config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+dnf install -y terraform
+
 # Start Jenkins after Java is installed
 systemctl start jenkins
 
@@ -87,7 +92,7 @@ usermod -aG docker jenkins
 
 systemctl restart docker
 systemctl restart jenkins
-EOF
+USERDATA
 
   tags = {
     Name = "jenkins-server"

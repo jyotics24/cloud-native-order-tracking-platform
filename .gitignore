@@ -18,3 +18,5 @@ eksctl.exe
 
 .DS_Store
 Thumbs.db
+jenkins-iam-policy.json
+jenkins-iam-policy.json

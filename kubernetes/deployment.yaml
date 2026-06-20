@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: order-tracking-app
-        image: 227655494308.dkr.ecr.us-east-1.amazonaws.com/order-tracking-app:13
+        image: 227655494308.dkr.ecr.us-east-1.amazonaws.com/order-tracking-app:v1
         ports:
         - containerPort: 5000
         resources:
@@ -24,3 +24,15 @@ spec:
           limits:
             cpu: "500m"
             memory: "256Mi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
