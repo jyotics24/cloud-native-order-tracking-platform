@@ -17,6 +17,19 @@ resource "aws_security_group" "jenkins_sg" {
     cidr_blocks = [var.ssh_allowed_cidr]
   }
 
+  ingress {
+    description = "GitHub webhook traffic"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = [
+      "192.30.252.0/22",
+      "185.199.108.0/22",
+      "140.82.112.0/20",
+      "143.55.64.0/20"
+    ]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
