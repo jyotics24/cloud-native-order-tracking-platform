@@ -1,16 +1,10 @@
-# create amazon-cloudwatch namespace
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: amazon-cloudwatch
-  labels:
-    name: amazon-cloudwatch
----
 
 # create cwagent service account and role binding
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::227655494308:role/order-tracking-cloudwatch-agent-role
   name: cloudwatch-agent
   namespace: amazon-cloudwatch
 
@@ -215,16 +209,16 @@ spec:
 
 # create configmap for cluster name and aws region for CloudWatch Logs
 # need to replace the placeholders order-tracking-eks and us-east-1
-# and need to replace {{http_server_toggle}} and {{http_server_port}}
-# and need to replace {{read_from_head}} and {{read_from_tail}}
+# and need to replace "On" and "2020"
+# and need to replace "Off" and "On"
 apiVersion: v1
 data:
   cluster.name: order-tracking-eks
   logs.region: us-east-1
-  http.server: {{http_server_toggle}}
-  http.port: {{http_server_port}}
-  read.head: {{read_from_head}}
-  read.tail: {{read_from_tail}}
+  http.server: "On"
+  http.port: "2020"
+  read.head: "Off"
+  read.tail: "On"
 kind: ConfigMap
 metadata:
   name: fluent-bit-cluster-info
